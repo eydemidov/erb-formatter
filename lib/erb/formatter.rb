@@ -63,7 +63,7 @@ class ERB::Formatter
 
   RUBY_STANDALONE_BLOCK = /\A(yield|next)\b/
   RUBY_CLOSE_BLOCK = /\Aend\z/
-  RUBY_REOPEN_BLOCK = /\A(else|elsif\b(.*)|when\b(.*))\z/
+  RUBY_REOPEN_BLOCK = /\A(else|(elsif|when|in)\b(.*))\z/
 
   RUBOCOP_STDIN_MARKER = "===================="
 

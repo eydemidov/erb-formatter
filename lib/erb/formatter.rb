@@ -63,7 +63,7 @@ class ERB::Formatter
 
   RUBY_STANDALONE_BLOCK = /\A(yield|next|break)\b/
   RUBY_CLOSE_BLOCK = /\Aend\z/
-  RUBY_REOPEN_BLOCK = /\A(else|(elsif|when|in)\b(.*))\z/
+  RUBY_REOPEN_BLOCK = /\A(else|(elsif|when|in)\b(.*)|rescue(\s+.*)?)\z/
 
   RUBOCOP_STDIN_MARKER = "===================="
 
@@ -316,7 +316,12 @@ class ERB::Formatter
           html << (erb_pre_match.match?(/\s+\z/) ? indented(full_erb_tag) : full_erb_tag)
         when RUBY_CLOSE_BLOCK
           full_erb_tag = "#{erb_open}#{ruby_code} #{erb_close}"
-          tag_stack_pop('%erb%', ruby_code)
+          # Always pop the most recent %erb% block for 'end'
+          if tag_stack.last&.first == '%erb%'
+            tag_stack.pop
+          else
+            tag_stack_pop('%erb%', ruby_code)
+          end
           html << (erb_pre_match.match?(/\s+\z/) ? indented(full_erb_tag) : full_erb_tag)
         when RUBY_REOPEN_BLOCK
           full_erb_tag = "#{erb_open}#{ruby_code} #{erb_close}"

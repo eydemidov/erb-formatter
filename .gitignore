@@ -8,3 +8,4 @@
 /tmp/
 /Gemfile.lock
 /test/fixtures/tailwindcss/class_sorting.css
+/.vscode/
